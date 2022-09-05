@@ -1,0 +1,71 @@
+<div class="container">
+    <div class="row mb-3 mt-3">
+        <div class="col-10">Contact List</div>
+        <button type="button" class="col-2 float-right btn btn-success btn-sm" (click)="addNew()">
+            Add New Contact
+        </button>
+    </div>
+    <form class="input-group mb-3" *ngIf="addNewRecord">
+        <input class="col-3 form-control" type="text" [(ngModel)]="newFirstName" placeholder="Enter First Name*" required
+            name="firstName">
+        <input class="col-3 form-control" type="text" [(ngModel)]="newLastName" placeholder="Enter Last Name*" required
+            name="lastName">
+        <input type="text" class="col-3 form-control" [(ngModel)]="newPhone" placeholder="Enter Phone*" required
+            name="phone">
+        <button type="button" class="col-3 btn btn-success btn-sm" (click)="saveNewRecord()">
+            Save
+        </button>
+    </form>
+    <div class="alert alert-danger" *ngIf="requireAllDetails">
+        Require All Details
+    </div>
+    <table *ngIf="contactList; else emptyList" class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Contact Number</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let contact of contactList; let i = index">
+                <td>
+                    <span *ngIf="i !== editRowNumber">
+                        {{contact.firstName}} {{contact.lastName}}
+                    </span>
+                    <div class="input-group" *ngIf="i === editRowNumber">
+                        <input class="form-control" type="text" [(ngModel)]="firstName">
+                        <input class="form-control" type="text" [(ngModel)]="lastName">
+                    </div>
+                </td>
+                <td>
+                    <span *ngIf="i !== editRowNumber">
+                        {{contact.phone}}
+                    </span>
+                    <input *ngIf="i === editRowNumber" type="text" class="form-control" [(ngModel)]="phone">
+                </td>
+                <td>
+                    <ng-container *ngIf="i !== editRowNumber">
+                        <button type="button" class="btn btn-danger btn-sm" (click)="onDelete(contact)">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                        <button type="button" class="btn btn-danger btn-sm" (click)="onEdit(contact)">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                    </ng-container>
+                    <div *ngIf="i === editRowNumber">
+                        <button type="button" class="btn btn-success btn-sm" (click)="editRecord()">
+                            Save
+                        </button>
+                    </div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <ng-template #emptyList>
+        <div class="alert alert-primary">
+            Contact List Empty
+        </div>
+    </ng-template>
+</div>
